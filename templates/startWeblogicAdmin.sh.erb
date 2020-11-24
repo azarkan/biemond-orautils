@@ -50,7 +50,7 @@ else
     echo "The Weblogic ${wlsAdminServer} for domain ${osDomain} is not running...."
     echo "Starting Weblogic ${wlsAdminServer} for domain ${osDomain}...."
     $osWlHome/common/bin/wlst.sh <<-EOF
-nmConnect('${user}','${password}','${hostname}','${nodeMgrPort}','${osDomain}','${osDomainPath}','ssl')
+nmConnect('${user}','${password}','${hostname}','${nodeMgrPort}','${osDomain}','${osDomainPath}','plain')
 nmStart('${wlsAdminServer}')
 nmServerStatus('${wlsAdminServer}')
 nmDisconnect()
