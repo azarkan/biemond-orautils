@@ -57,7 +57,12 @@ define orautils::nodemanagerautostart(
     $trust_env = ''
   }
 
-  if ($::operatingsystem in ['CentOS','RedHat','OracleLinux'] and $::operatingsystemmajrelease == '7') {
+  # Puppet 8 compatibility - use facts hash
+  $os_name = pick($facts['os']['name'], $::operatingsystem)
+  $os_family = pick($facts['os']['family'], $::osfamily)
+  $os_major = pick($facts['os']['release']['major'], $::operatingsystemmajrelease)
+
+  if ($os_name in ['CentOS','RedHat','OracleLinux','Rocky','AlmaLinux'] and $os_major == '7') {
     $location = "/home/${user}/${scriptName}"
   } else {
     $location = "/etc/init.d/${scriptName}"
@@ -71,9 +76,9 @@ define orautils::nodemanagerautostart(
 
   $execPath = '/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin'
 
-  case $::operatingsystem {
-    'CentOS', 'RedHat', 'OracleLinux': {
-      if ( $::operatingsystemmajrelease == '7') {
+  case $os_name {
+    'CentOS', 'RedHat', 'OracleLinux', 'Rocky', 'AlmaLinux': {
+      if ( $os_major == '7') {
         file { "/lib/systemd/system/${scriptName}.service" :
           ensure  => present,
           mode    => '0755',
