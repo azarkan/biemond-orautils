@@ -2,106 +2,108 @@
 #
 class orautils::params
 {
+  # Puppet 8 compatibility - use structured facts
+  $hostname = $facts['networking']['hostname']
 
-  $osOracleHome = $::hostname ? {
+  $osOracleHome = $hostname ? {
     wls12           => '/oracle/product',
     soabeta2        => '/opt/oracle/wls',
     oimapp          => '/opt/oracle',
     default         => '/opt/wls',
   }
 
-  $oraInventory = $::hostname ? {
+  $oraInventory = $hostname ? {
     soabeta2        => '/home/oracle/soabetainv',
     wls12           => '/oracle/oraInventory',
     oimapp          => '/opt/oracle/oraInventory',
     default         => '/opt/wls/oraInventory',
   }
 
-  $osDomainType = $::hostname ? {
+  $osDomainType = $hostname ? {
     devagent31      => 'soa',
     wls12           => 'admin',
     oimapp          => 'oim',
     default         => 'web',
   }
 
-  $osLogFolder = $::hostname ? {
+  $osLogFolder = $hostname ? {
     default    => '/data/logs',
   }
 
 
-  $osDownloadFolder = $::hostname ? {
+  $osDownloadFolder = $hostname ? {
     default    => '/data/install',
   }
 
-  $shell        = $::operatingsystem ? {
+  $shell        = $facts['os']['name'] ? {
     'Solaris' => '/usr/bin/ksh',
     default   => '/bin/sh',
   }
 
-  $osMdwHome     = $::hostname ?  {
+  $osMdwHome     = $hostname ?  {
     wls12           => "${osOracleHome}/Middleware12c",
     default         => "${osOracleHome}/Middleware11gR1",
   }
 
-  $osWlHome     = $::hostname ?  {
+  $osWlHome     = $hostname ?  {
     wls12           => "${osOracleHome}/Middleware12c/wlserver",
     default         => "${osOracleHome}/Middleware11gR1/wlserver_10.3",
   }
 
-  $oraUser      = $::hostname ? {
+  $oraUser      = $hostname ? {
     default => 'oracle',
   }
 
-  $oraGroup     = $::hostname ? {
+  $oraGroup     = $hostname ? {
     default => 'dba',
   }
 
-  $userHome     = $::operatingsystem ? {
+  $userHome     = $facts['os']['name'] ? {
     'Solaris' => '/export/home',
     default   => '/home',
   }
 
-  $oraInstHome  = $::operatingsystem ? {
+  $oraInstHome  = $facts['os']['name'] ? {
     'Solaris' => '/var/opt',
     default   => '/etc',
   }
 
-  $osDomain     = $::hostname ? {
+  $osDomain     = $hostname ? {
     wls12           => 'Wls12c',
     oimapp          => 'oimDomain',
     default         => 'osbSoaDomain',
   }
 
-  $osDomainPath = $::hostname ? {
+  $osDomainPath = $hostname ? {
     default    => "${osMdwHome}/user_projects/domains/${osDomain}",
   }
 
-  $nodeMgrPath = $::hostname ?  {
+  $nodeMgrPath = $hostname ?  {
     wls12           => "${osMdwHome}/user_projects/domains/${osDomain}/bin",
     default         => "${osWlHome}/server/bin",
   }
 
-  $nodeMgrPort = $::hostname ?  {
+  $nodeMgrPort = $hostname ?  {
     default    => 5556,
   }
 
-  $nodeMgrAddress = $::hostname ?  {
+  $nodeMgrAddress = $hostname ?  {
     default    => 'localhost',
   }
 
-  $wlsUser     = $::hostname ?  {
+  $wlsUser     = $hostname ?  {
     default    => 'weblogic',
   }
 
-  $wlsPassword = $::hostname ?  {
+  $wlsPassword = $hostname ?  {
     default    => 'weblogic1',
   }
 
-  $wlsAdminServer = $::hostname ?  {
+  $wlsAdminServer = $hostname ?  {
     default    => 'AdminServer',
   }
 
-  $jsseEnabled = $::hostname ?  {
+  $jsseEnabled = $hostname ?  {
     default    => false,
   }
 }

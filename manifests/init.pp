@@ -25,8 +25,8 @@ class orautils(
   $trust_keystore_passphrase = undef,
 ) inherits orautils::params
 {
-
-  case $::kernel {
+  # Puppet 8 compatibility - use structured facts
+  case $facts['kernel'] {
     'Linux', 'SunOS': {
 
     $mode             = '0775'
