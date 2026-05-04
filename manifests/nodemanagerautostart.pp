@@ -57,10 +57,10 @@ define orautils::nodemanagerautostart(
     $trust_env = ''
   }
 
-  # Puppet 8 compatibility - use facts hash
-  $os_name = pick($facts['os']['name'], $::operatingsystem)
-  $os_family = pick($facts['os']['family'], $::osfamily)
-  $os_major = pick($facts['os']['release']['major'], $::operatingsystemmajrelease)
+  # Puppet 8 compatibility - use structured facts only
+  $os_name = $facts['os']['name']
+  $os_family = $facts['os']['family']
+  $os_major = $facts['os']['release']['major']
 
   if ($os_name in ['CentOS','RedHat','OracleLinux','Rocky','AlmaLinux'] and $os_major == '7') {
     $location = "/home/${user}/${scriptName}"
